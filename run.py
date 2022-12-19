@@ -50,6 +50,7 @@ def validate_data(values):
     """
 
     try:
+        # convert input, which is string, into integers
         [int(value) for value in values]
         if len(values) != 6:
             raise ValueError(
@@ -60,6 +61,7 @@ def validate_data(values):
         return False
     
     return True
+
 
 def update_sales_worksheet(data):
     """
