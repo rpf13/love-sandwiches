@@ -1,7 +1,8 @@
 # Write your code to expect a terminal of 80 characters wide and 24 rows high
+
+from pprint import pprint
 import gspread
 from google.oauth2.service_account import Credentials
-from pprint import pprint
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -14,10 +15,11 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('love_sandwiches')
 
-# sales = SHEET.worksheet('sales')
-# data = sales.get_all_values()
-# print(data)
-
+"""
+This program is done for educational purpose only
+to demonstrate how to build an app in python
+as part of the Code Institute's training
+"""
 
 def get_sales_data():
     """
@@ -59,7 +61,7 @@ def validate_data(values):
             )
     except ValueError as e:
         print(f"Invalid data: {e}, please try again.\n")
-        return False    
+        return False
     return True
 
 
@@ -84,14 +86,14 @@ def calculate_surplus_data(sales_row):
     print("calculating surplus data...\n")
     stock = SHEET.worksheet("stock").get_all_values()
     stock_row = stock[-1]
-    
+   
     surplus_data = []
     # the zip method is used to iterate over two list in the same time
     for stock, sales in zip(stock_row, sales_row):
         # we need to convert the strings in the stock list into integeters to work with them
         surplus = int(stock) - sales
         surplus_data.append(surplus)
-    
+   
     return surplus_data
 
 
@@ -133,7 +135,6 @@ def calculate_stock_data(data):
     return new_stock_data
 
 
-
 # The main function to call all other functions is usually wrapped into a main function.
 # Then the main function gets called.
 def main():
@@ -149,6 +150,7 @@ def main():
     sales_columns = get_last_5_entries_sales()
     stock_data = calculate_stock_data(sales_columns)
     update_worksheet(stock_data, "stock")
+
 
 print("Welcome to love Sandwiches Data Automation")
 main()
