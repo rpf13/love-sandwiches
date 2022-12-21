@@ -63,25 +63,6 @@ def validate_data(values):
     return True
 
 
-# def update_sales_worksheet(data):
-#     """
-#     Update sales worksheet, add new row with the list of data provided.
-#     """
-#     print("Updating sales worksheet...\n")
-#     sales_worksheet = SHEET.worksheet('sales')
-#     sales_worksheet.append_row(data)
-#     print("Sales worksheet updated successfully.\n")
-# 
-# 
-# def update_surplus_worksheet(data):
-#     """
-#     Update surplus worksheet, add new row with the list of data provided.
-#     """
-#     print("Updating surplus worksheet...\n")
-#     surplus_worksheet = SHEET.worksheet('surplus')
-#     surplus_worksheet.append_row(data)
-#     print("Surplus worksheet updated successfully.\n")
-
 def update_worksheet(data, worksheet):
     """
     Receives a list of integers to be insterted into a worksheet
@@ -113,6 +94,27 @@ def calculate_surplus_data(sales_row):
     
     return surplus_data
 
+
+def get_last_5_entries_sales():
+    """
+    Collects collumns of data from sales worksheet, collecting
+    the last 5 entries for each sandwicht and returns the data
+    as a list of lists.
+    """
+    sales = SHEET.worksheet("sales")
+    # to access columns col meth from gspread is used. A range is created, which equeals
+    # the columns in the sheet, then we use this range to loop over it and get the column
+    # for each "number". Sheet columsn is from 1-6, not from 0.
+    # column = sales.col_values(3)
+
+    columns = []
+    for ind in range(1, 7):
+        column = sales.col_values(ind)
+        # getting the last 5 entries from each column (slice)
+        columns.append(column[-5:])
+    return columns
+
+
 # The main function to call all other functions is usually wrapped into a main function.
 # Then the main function gets called.
 def main():
@@ -127,4 +129,6 @@ def main():
     update_worksheet(new_surplus_data, "surplus")
 
 print("Welcome to love Sandwiches Data Automation")
-main()
+# main()
+
+sales_columns = get_last_5_entries_sales()
